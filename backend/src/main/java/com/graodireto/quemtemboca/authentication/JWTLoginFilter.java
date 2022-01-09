@@ -10,13 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -33,10 +30,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException {
-		LoginCredentials credentials = new ObjectMapper()
-				.readValue(request.getInputStream(), LoginCredentials.class);
 		return getAuthenticationManager().authenticate(
-				new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword())
+				new CustomAuthenticationToken(request.getParameter("email"), request.getParameter("password"), null)
 				);
 	}
 	
@@ -46,8 +41,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 			HttpServletResponse response,
 			FilterChain filterChain,
 			Authentication auth) throws IOException, ServletException {
-		
-		TokenAuthenticationService.addAuthentication(response, auth.getName());
+		TokenAuthenticationService.addAuthentication(response, (CustomAuthenticationToken) auth);
 	}
 	
 }

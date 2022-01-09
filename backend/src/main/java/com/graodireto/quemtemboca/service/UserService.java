@@ -1,7 +1,6 @@
 package com.graodireto.quemtemboca.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ public class UserService extends AbstractService<User> {
 	private IUserRepository userRepository;
 	
 	@Override
-	public JpaRepository<User, Long> getRepository() {
+	public IUserRepository getRepository() {
 		return userRepository;
 	}
 	
@@ -28,5 +27,9 @@ public class UserService extends AbstractService<User> {
 			}
 		}
 		return null;
+	}
+
+	public User findByEmail(String email) {
+		return getRepository().findByEmail(email);
 	}
 }

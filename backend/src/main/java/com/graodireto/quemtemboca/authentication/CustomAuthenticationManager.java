@@ -28,6 +28,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 			if (user == null) {				
 				throw new BadCredentialsException("Usuário inexistente.");
 			}
+			authentication = new CustomAuthenticationToken(email, null, user.getName());
 		}
 		return authentication;
 	}

@@ -2,9 +2,16 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('src/layouts/PublicLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') }
+    ]
+  },
+  {
+    path: '/private',
+    component: () => import('src/layouts/PrivateLayout.vue'),
+    children: [
+      { path: 'restaurants', component: () => import('pages/Restaurants.vue') }
     ]
   },
 

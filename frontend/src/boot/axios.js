@@ -7,9 +7,19 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' })
+const api = axios.create({ baseURL: 'http://192.168.0.3:8080' })
 
-export default boot(({ app }) => {
+export default boot(({ app, store }) => {
+  api.interceptors.request.use(function (config) {
+    const authToken = store.state.authorization
+    if (authToken) {
+      config.headers.authorization = authToken
+    }
+    return config
+  }, function (error) {
+    // Do something with request error
+    return Promise.reject(error)
+  })
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios

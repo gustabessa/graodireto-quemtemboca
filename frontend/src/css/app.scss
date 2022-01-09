@@ -1,1 +1,10 @@
 // app global css in SCSS form
+.bg-default {
+  background-color: $background;
+}
+.bg-lighter1 {
+  background-color: $backgroundLighter1;
+}
+.w-50 {
+  width: 50%;
+}

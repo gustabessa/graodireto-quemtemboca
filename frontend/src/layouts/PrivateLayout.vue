@@ -8,9 +8,9 @@
             flat
             dense
             round
-            v-if="isLogged"
+            v-if="isDetailingRestaurant"
             icon="chevron_left"
-            @click="logout()"
+            @click="goBack()"
           />
           <q-tooltip>
             Voltar
@@ -63,6 +63,9 @@ export default defineComponent({
       if (!this.isLogged) {
         this.$router.push('/')
       }
+    },
+    goBack () {
+      this.$router.back()
     }
   },
   computed: {
@@ -71,6 +74,9 @@ export default defineComponent({
     },
     isLogged () {
       return !!this.$store.state.user.authorization
+    },
+    isDetailingRestaurant () {
+      return this.$router.currentRoute.value.fullPath === '/private/restaurant/menu'
     }
   }
 })

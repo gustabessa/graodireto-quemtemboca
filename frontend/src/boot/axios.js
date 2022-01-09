@@ -11,7 +11,7 @@ const api = axios.create({ baseURL: 'http://192.168.0.3:8080' })
 
 export default boot(({ app, store }) => {
   api.interceptors.request.use(function (config) {
-    const authToken = store.state.authorization
+    const authToken = store.state.user.authorization
     if (authToken) {
       config.headers.authorization = authToken
     }

@@ -11,7 +11,8 @@ const routes = [
     path: '/private',
     component: () => import('src/layouts/PrivateLayout.vue'),
     children: [
-      { path: 'restaurants', component: () => import('pages/Restaurants.vue') }
+      { path: 'restaurants', component: () => import('pages/Restaurants.vue') },
+      { path: 'restaurant/menu', component: () => import('pages/RestaurantMenu.vue') }
     ]
   },
 

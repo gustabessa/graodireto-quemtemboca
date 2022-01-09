@@ -6,4 +6,4 @@ Frontend - Vue.js (Quasar)
 
 Backend - Java (Springboot: Spring Security, Spring Data, Spring WEB; JWT)
 
-Database - PostgreSQL
+Database - PostgreSQL (Liquibase para gerenciar alterações)

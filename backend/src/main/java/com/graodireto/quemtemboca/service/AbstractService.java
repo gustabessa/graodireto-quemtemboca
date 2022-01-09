@@ -1,5 +1,7 @@
 package com.graodireto.quemtemboca.service;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class AbstractService<T> {
@@ -24,5 +26,9 @@ public abstract class AbstractService<T> {
 	
 	public void deleteById(Long id) {
 		getRepository().deleteById(id);
+	}
+	
+	public List<T> findAll() {
+		return getRepository().findAll();
 	}
 }

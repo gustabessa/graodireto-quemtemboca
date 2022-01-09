@@ -19,7 +19,7 @@ public class UserService extends AbstractService<User> {
 	}
 	
 	public User findByEmailAndPassword(String email, String password) {
-		User user = userRepository.findByEmail(email);
+		User user = getRepository().findByEmail(email);
 		if (user != null) {
 			Boolean senhaCorreta = BCrypt.checkpw(password, user.getPassword());
 			if (senhaCorreta == true) {

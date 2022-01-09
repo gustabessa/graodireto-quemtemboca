@@ -3,6 +3,8 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 	
-  <include file="2022-01-08-1842-criacao-tabela-usuario.xml"/>
+  <include file="2022-01-08-1842-criacao-tabela-user.xml"/>
+  <include file="2022-01-09-1636-criacao-tabela-restaurant-category.xml"/>
+  <include file="2022-01-09-1643-criacao-tabela-restaurant.xml"/>
   
 </databaseChangeLog>

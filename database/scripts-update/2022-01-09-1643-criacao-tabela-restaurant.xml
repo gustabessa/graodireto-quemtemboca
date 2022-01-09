@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+   
+	<changeSet author="gustavo" id="202201091643">
+        <sql splitStatements="true" stripComments="true">	
+		
+			CREATE TABLE tb_restaurant(
+				id bigserial NOT NULL,
+				name varchar(250) NOT NULL,
+				fk_restaurant_category BIGINT REFERENCES tb_restaurant_category(id) NOT NULL,
+				street varchar(250),
+				neighborhood varchar(100),
+				address_number varchar(10),
+				phone varchar(11),
+				PRIMARY KEY ("id")
+			);
+			
+        </sql>
+    </changeSet>
+	
+	<changeSet author="gustavo" id="202201091656">
+        <sql splitStatements="true" stripComments="true">	
+		
+			INSERT INTO tb_restaurant 
+				(name, fk_restaurant_category, street, neighborhood, address_number, phone)
+			VALUES 
+				('Restaurante Sem Futuro', 1, 'Avenida João Carlos', 'Centro', '293', '3434323434'),
+				('Ao Ponto!', 2, 'Avenida Jõao Picanha Nunes', 'Contra', '327', '34992255444'),
+				('Aqui Agora', 3, 'Rua Akiper Tim', 'Do Lado', '12', '3432355779'),
+				('É refresco!', 4, 'Rua No Dos Outros', 'Apimentado', '89', '34997974551'),
+				('Bão Tchê', 5, 'Avenida Estudante Alexandre', 'Eminium Faria', '516', '3433556363'),
+				('Fatia da Tia Fátima', 6, 'Rua Nº3', 'Toss Cana', '8', '3433366161'),
+				('TaKaro', 7, 'Rua MiaKuda', 'Saiko Reno', '33', '34994569112');
+			
+        </sql>
+    </changeSet>
+	
+</databaseChangeLog>

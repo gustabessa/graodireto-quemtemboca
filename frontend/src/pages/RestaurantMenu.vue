@@ -20,7 +20,7 @@
       <q-list
         dark
         separator>
-        <restaurant-card v-for="restaurant in restaurants" :restaurant="restaurant" :key="restaurant.id" />
+        <restaurant-item-card v-for="restaurantItem in restaurantItems" :restaurantItem="restaurantItem" :key="restaurantItem.id" />
       </q-list>
     </div>
 
@@ -29,24 +29,23 @@
 
 <script>
 import { defineComponent } from 'vue'
-import RestaurantCard from '../components/RestaurantCard.vue'
+import RestaurantItemCard from '../components/RestaurantItemCard.vue'
 import NumberUtils from '../utils/NumberUtils'
 
 export default defineComponent({
-  name: 'Restaurants',
+  name: 'RestaurantMenu',
   data () {
     return {
-      searchText: '',
-      restaurants: []
+      restaurantItems: []
     }
   },
   mounted () {
-    this.$api.get('/restaurant')
-      .then(({ data }) => { this.restaurants = data })
+    this.$api.get(`/restaurantitem/restaurant?restaurantId=${this.restaurant?.id}`)
+      .then(({ data }) => { this.restaurantItems = data })
       .catch(err => console.error(err))
   },
   components: {
-    'restaurant-card': RestaurantCard
+    RestaurantItemCard
   },
   computed: {
     restaurant () {

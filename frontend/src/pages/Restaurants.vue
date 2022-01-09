@@ -49,7 +49,7 @@ export default defineComponent({
       .catch(err => console.error(err))
   },
   components: {
-    'restaurant-card': RestaurantCard
+    RestaurantCard
   }
 })
 </script>

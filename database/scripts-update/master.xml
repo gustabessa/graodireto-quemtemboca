@@ -6,5 +6,6 @@
   <include file="2022-01-08-1842-criacao-tabela-user.xml"/>
   <include file="2022-01-09-1636-criacao-tabela-restaurant-category.xml"/>
   <include file="2022-01-09-1643-criacao-tabela-restaurant.xml"/>
+  <include file="2022-01-09-1953-criacao-tabela-restaurant-item.xml"/>
   
 </databaseChangeLog>

@@ -1,14 +1,20 @@
 package com.graodireto.quemtemboca.authentication;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.graodireto.quemtemboca.config.JWTProperties;
@@ -19,7 +25,9 @@ import com.graodireto.quemtemboca.config.JWTProperties;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
-	private AuthenticationProvider authProvider;
+	private CustomAuthenticationProvider authProvider;
+	@Autowired
+	private CustomAuthenticationManager authManager;
 	@Autowired
 	private JWTAuthenticationFilter jwtAuthenticationFilter;
 	
@@ -31,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			
 			// filtra requisições de login			
-			.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+			.addFilterBefore(new JWTLoginFilter("/login", authManager),
 	                UsernamePasswordAuthenticationFilter.class)
 			
 			// filtra outras requisições para verificar a presença do JWT no header
@@ -41,6 +49,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authProvider);
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		Map<String, PasswordEncoder> encoders = new HashMap<>();
+		encoders.put("bcrypt", new BCryptPasswordEncoder());
+		PasswordEncoder passwordEncoder = new DelegatingPasswordEncoder("bcrypt", encoders);
+
+		return passwordEncoder;
 	}
 	
 }

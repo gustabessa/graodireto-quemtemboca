@@ -1,7 +1,6 @@
 package com.graodireto.quemtemboca.authentication;
 
 import java.util.Collections;
-import java.util.Date;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,6 @@ public class TokenAuthenticationService {
 
 	private static JWTProperties jwtProperties;
 	
-	static final long EXPIRATION_TIME = 86_400_000;
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
 	
@@ -37,7 +35,6 @@ public class TokenAuthenticationService {
 	static void addAuthentication(HttpServletResponse response, String username) {
 		SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
 		String JWT = Jwts.builder().setSubject(username)
-				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(key, SignatureAlgorithm.HS512).compact();
 
 		response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);

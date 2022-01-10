@@ -16,4 +16,31 @@
         </sql>
     </changeSet>
 	
+	<changeSet author="gustavo" id="202201092022">
+        <sql splitStatements="true" stripComments="true">	
+		
+			INSERT INTO tb_restaurant_item 
+				(fk_restaurant, name, price, description)
+			VALUES 
+				(1, 'Strogonoff', 21.21, 'Carne, arroz, batata frita'),
+				(1, 'Bife à Cavalo', 25.20, 'Bife, Ovo, Arroz'),
+				(1, 'Arroz Carreteiro', 25.0, 'Arroz, carnes variadas'),
+				(1, 'Galinhada', 15.0, 'Arroz, Frango'),
+				(1, 'Executivo', 21.21, 'Arroz, Feijão, Bife, Purê'),
+				(2, 'Porção Picanha ao Alho', 45.0, '700g de picanha ao alho'),
+				(2, 'Porção de Batata Frita', 15.0, '400g batata'),
+				(3, 'Marmitex self-service pequeno', 17.0, 'Arroz, 1 carnes, feijão'),
+				(3, 'Marmitex self-service grande', 22.0, 'Arroz, 2 carnes, feijão e macarrão'),
+				(3, 'Almoço self-service', 45.0, 'Preço do kilo'),
+				(4, 'Taquitos Jalapeño Carne', 19.0, 'Porção com 6 un.'),
+				(4, 'Burrito de Carne Grande', 21.0, 'Carne, salada e molho picante'),
+				(5, 'Marmitex + Churrasco Gaúcho', 21.0, 'Churrasco gaúcho, salada de maionese e arroz'),
+				(6, 'Pizza Salgada até 2 Sabores', 49.9, 'Toscana, Paulista, Mineira, Mussarela, Palmito'),
+				(6, 'Pizza Doce até 2 Sabores', 40.0, 'Prestígio, Chocolate, Banana, Leite Ninho'),
+				(7, 'Temaki', 55.0, 'Temaki pequeno de salmão ou shimeji'),
+				(7, 'Combo 10 peças', 40.0, 'Hot Roll e Nigiri');
+			
+        </sql>
+    </changeSet>
+	
 </databaseChangeLog>

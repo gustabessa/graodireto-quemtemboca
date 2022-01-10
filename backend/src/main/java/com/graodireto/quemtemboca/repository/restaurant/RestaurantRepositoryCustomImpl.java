@@ -24,6 +24,7 @@ public class RestaurantRepositoryCustomImpl extends AbstractRepository<Restauran
 		queryBuilder.append(" WHERE (lower(R.name) LIKE lower(:queryName))");
 		queryBuilder.append(" 	OR (lower(RC.name) LIKE lower(:queryName))");
 		queryBuilder.append(" 	OR (lower(RI.name) LIKE lower(:queryName))");
+		queryBuilder.append(" 	OR (lower(RI.description) LIKE lower(:queryName))");
 		queryBuilder.append(" ORDER BY R.id");
 		
 		params.put("queryName", queryName);

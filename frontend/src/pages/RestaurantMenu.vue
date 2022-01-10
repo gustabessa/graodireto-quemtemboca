@@ -78,7 +78,7 @@ export default defineComponent({
 .q-list--dark.q-list--separator > .q-item-type + .q-item-type {
   border-top-color: $primary;
 }
-.q-list--dark.q-list--separator > .q-item-type + .q-item-type:last-child {
+.q-list--dark.q-list--separator >.q-item-type:last-child {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   border-bottom-color: $primary;
 }

@@ -3,12 +3,12 @@
     <q-header class="bg-default" elevated>
       <q-toolbar>
 
-        <div>
+        <div style="width: 50px;">
           <q-btn
             flat
             dense
             round
-            v-if="isDetailingRestaurant"
+            v-show="isDetailingRestaurant"
             icon="chevron_left"
             @click="goBack()"
           />
@@ -81,3 +81,5 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="scss">
+</style>

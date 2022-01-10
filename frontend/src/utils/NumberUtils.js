@@ -12,5 +12,9 @@ export default {
     maskedPhone += `${unmaskedValue.slice(0, 4)}-${unmaskedValue.slice(4)}`
 
     return maskedPhone
+  },
+
+  formatMoneyBr (price) {
+    return price.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
   }
 }

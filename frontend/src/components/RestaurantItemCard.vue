@@ -10,14 +10,16 @@
       </q-item-label>
     </q-item-section>
     <q-item-section
-      avatar>
-      <q-icon color="primary" name="arrow_right" size="40px" />
+      style="min-height: 40px; height: inherit;"
+      side>
+      <span class="text-primary item-price h-100">{{ getFormattedPrice(restaurantItem.price) }}</span>
     </q-item-section>
   </q-item>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import NumberUtils from '../utils/NumberUtils'
 
 export default defineComponent({
   name: 'RestaurantItemCard',
@@ -26,9 +28,16 @@ export default defineComponent({
       type: Object,
       required: true
     }
+  },
+  methods: {
+    getFormattedPrice (price) {
+      return NumberUtils.formatMoneyBr(price)
+    }
   }
 })
 </script>
 <style lang="scss">
-
+  .item-price {
+    font-size: 20px;
+  }
 </style>

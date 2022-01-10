@@ -1,5 +1,7 @@
 package com.graodireto.quemtemboca.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,10 @@ public class RestaurantService extends AbstractService<Restaurant> {
 	@Override
 	public IRestaurantRepository getRepository() {
 		return restaurantRepository;
+	}
+
+	public List<Restaurant> findByRestaurantOrItem(String queryName) {
+		return getRepository().findByRestaurantOrItem(queryName);
 	}
 	
 }

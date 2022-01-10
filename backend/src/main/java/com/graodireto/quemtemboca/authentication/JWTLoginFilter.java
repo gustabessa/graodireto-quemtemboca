@@ -22,7 +22,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Qualifier("TokenAuthenticationService")
 	private TokenAuthenticationService tokenAuthenticationService;
 	
-	protected JWTLoginFilter(String url, AuthenticationManager authManager) {
+	public JWTLoginFilter(String url, AuthenticationManager authManager) {
 		super(new AntPathRequestMatcher(url));
 		setAuthenticationManager(authManager);
 	}

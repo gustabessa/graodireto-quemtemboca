@@ -1,4 +1,4 @@
-package com.graodireto.quemtemboca.authentication;
+package com.graodireto.quemtemboca.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
-import com.graodireto.quemtemboca.config.JWTProperties;
+import com.graodireto.quemtemboca.authentication.CustomAuthenticationManager;
+import com.graodireto.quemtemboca.authentication.CustomAuthenticationProvider;
+import com.graodireto.quemtemboca.authentication.JWTAuthenticationFilter;
+import com.graodireto.quemtemboca.authentication.JWTLoginFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -44,11 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.POST, "/login").permitAll()
 			.anyRequest().authenticated()
 			.and()
-			
 			// filtra requisições de login			
 			.addFilterBefore(new JWTLoginFilter("/login", authManager),
 	                UsernamePasswordAuthenticationFilter.class)
-			
 			// filtra outras requisições para verificar a presença do JWT no header
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}

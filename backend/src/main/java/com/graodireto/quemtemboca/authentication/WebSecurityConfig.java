@@ -20,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.graodireto.quemtemboca.config.JWTProperties;
 
 @Configuration
@@ -70,9 +72,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.applyPermitDefaultValues();
+        // Para expor o header de 'authorization', utilizado para transitar o jwt
         corsConfiguration.addExposedHeader("authorization");
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
+	
+	@Bean
+	// Para evitar erro ao parsear objeto com proxy do hibernate 
+	public Module datatypeHibernateModule() {
+	  return new Hibernate5Module();
+	}
 	
 }

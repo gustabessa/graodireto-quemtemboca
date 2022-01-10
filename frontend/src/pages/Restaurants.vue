@@ -6,12 +6,14 @@
         dark
         filled
         standout
-        v-model="searchText"
+        @keyup.enter="filterFunction"
+        v-model="value"
         type="text"
         hint="Pesquise por nome de restaurante ou refeição"
         label="Pesquisar">
         <template v-slot:append>
           <q-icon
+            @click="filterFunction"
             name="search"
             class="cursor-pointer"
           />
@@ -39,17 +41,30 @@ export default defineComponent({
   name: 'Restaurants',
   data () {
     return {
-      searchText: '',
+      value: '',
       restaurants: []
     }
   },
   mounted () {
+    this.value = this.queryText
     this.$api.get('/restaurant')
       .then(({ data }) => { this.restaurants = data })
       .catch(err => console.error(err))
   },
+  methods: {
+    filterFunction () {
+      this.$api.get('/restaurant/restaurantoritem?queryName=' + this.value)
+        .then(({ data }) => { this.restaurants = data })
+        .catch(err => console.error(err))
+    }
+  },
   components: {
     RestaurantCard
+  },
+  computed: {
+    queryText () {
+      return this.$store.state.restaurant.queryText
+    }
   }
 })
 </script>

@@ -22,8 +22,9 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'PublicLayout',
-  setup () {
-    return {
+  mounted () {
+    if (this.$store.state.user.authorization) {
+      this.$router.push('/private/restaurants')
     }
   }
 })

@@ -48,8 +48,8 @@ export default defineComponent({
   name: 'PageIndex',
   data () {
     return {
-      email: 'fred@graodireto.com.br',
-      password: '123Fred',
+      email: '',
+      password: '',
       isPassword: true
     }
   },

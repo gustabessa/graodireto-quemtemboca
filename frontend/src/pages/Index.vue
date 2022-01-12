@@ -22,6 +22,7 @@
         dark
         filled
         standout
+        @keyup.enter="login"
         v-model="password"
         :type="isPassword ? 'password' : 'text'"
         label="Password">
@@ -43,6 +44,7 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { Notify } from 'quasar'
 
 export default defineComponent({
   name: 'PageIndex',
@@ -63,11 +65,16 @@ export default defineComponent({
         .then(response => {
           if (response.headers.authorization) {
             this.$store.dispatch('user/commitName', response.data)
-            this.$store.dispatch('user/commitAuthorization', response.headers.authorization)
             this.$router.push('/private/restaurants')
           }
         })
-        .catch(err => console.error(err))
+        .catch(err => {
+          Notify.create({
+            type: 'negative',
+            message: 'Usuário ou senha inválida.'
+          })
+          console.error(err)
+        })
     }
   }
 })

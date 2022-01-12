@@ -17,17 +17,20 @@ import org.springframework.stereotype.Component;
 import com.graodireto.quemtemboca.config.JWTProperties;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Clock;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 @Component
 public class TokenAuthenticationService {
 
 	private static JWTProperties jwtProperties;
 	
+	// 1 dia de validade
+	static final long EXPIRATION_TIME = 86_400_000;
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
 	
@@ -37,43 +40,58 @@ public class TokenAuthenticationService {
     }
 	
 	static void addAuthentication(HttpServletResponse response, CustomAuthenticationToken authentication) throws IOException {
-		Map<String, String> claims = new HashMap<String, String>();
-		claims.put("name", authentication.getName());
-		
-		SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
-		String JWT = Jwts.builder().setClaims(claims).setSubject(authentication.getPrincipal())
-				.signWith(key, SignatureAlgorithm.HS512).compact();
-
+		String JWT = buildJwt(authentication.getName(), authentication.getPrincipal());
 		response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
 		response.getWriter().write(authentication.getName());
 	}
 
-	public Authentication getAuthentication(HttpServletRequest request) {
+	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		String token = request.getHeader(HEADER_STRING);
 
 		if (token != null) {
-			SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
-			Claims claims = Jwts.parserBuilder()
-						.setClock(getNewClock())
-						.setSigningKey(key)
-						.build()
-						.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-						.getBody();
-			if (claims != null && claims.getSubject() != null) {
-				return new CustomAuthenticationToken(claims.getSubject(), null, (String) claims.get("name"));
+			Claims claims = null;
+			try {
+				claims = parseJwt(token);
+			} catch (ExpiredJwtException ex) {
+				claims = ex.getClaims();
+				if (claims != null && claims.getSubject() != null) {
+					String JWT = buildJwt((String) claims.get("name"), (String) claims.getSubject());
+					response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+				}
+			} finally {
+				if (claims != null && claims.getSubject() != null) {
+					return new CustomAuthenticationToken(claims.getSubject(), null, (String) claims.get("name"));
+				}
 			}
 		}
 		return null;
 	}
 	
-	public Clock getNewClock() {
-		return new Clock() {
-			
-            @Override
-            public Date now() {
-                return new Date(System.currentTimeMillis()/2);
-            }
-		};
+	public static String buildJwt(String name, String principal) {
+		Map<String, String> claims = new HashMap<String, String>();
+		claims.put("name", name);
+		SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
+		return Jwts.builder()
+				.setClaims(claims)
+				.setExpiration(new Date(System.currentTimeMillis() + 10L))
+				.setSubject(principal)
+				.signWith(key, SignatureAlgorithm.HS512)
+				.compact();
+	}
+	
+	public Claims parseJwt(String token) {
+		SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
+		Claims claims = null;
+		try {
+			claims = Jwts.parserBuilder()
+				.setSigningKey(key)
+				.build()
+				.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+				.getBody();
+		} catch (SignatureException ex) {
+			return null;
+		}
+		return claims;
 	}
 
 }

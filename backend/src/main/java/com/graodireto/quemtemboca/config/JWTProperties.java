@@ -17,5 +17,4 @@ public class JWTProperties {
 		this.secret = secret;
 	}
 
-    // getter & setter
 }

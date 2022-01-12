@@ -17,7 +17,18 @@ export default boot(({ app, store }) => {
     }
     return config
   }, function (error) {
-    // Do something with request error
+    return Promise.reject(error)
+  })
+
+  api.interceptors.response.use(function (response) {
+    // Guarda o token de authenticação toda vez que ele vem em um response
+    const token = response.headers.authorization
+    if (token !== undefined) {
+      store.dispatch('user/commitAuthorization', token)
+    }
+
+    return response
+  }, function (error) {
     return Promise.reject(error)
   })
   // for use inside Vue files (Options API) through this.$axios and this.$api
